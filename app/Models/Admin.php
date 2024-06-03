@@ -31,6 +31,7 @@ class Admin extends Authenticatable implements LaratrustUser
         'password',
         'remember_token',
     ];
+    // Define a local scope to get users with the 'admin' role
 
 }
 

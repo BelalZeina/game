@@ -99,7 +99,7 @@
 
                                                 <a class="dropdown-item cursor-pointer" data-bs-toggle="modal"
                                                     data-bs-target="#{{"modalToggle-$user->id"}}"><i class="bx bx-trash me-1"></i>
-                                                    {{ __('models.delete') }}</a>
+                                                    {{ __('models.d') }}</a>
 
                                                 {{-- <a class="dropdown-item" href="{{ route('users.show', $user->id) }}"><i
                                                         class="bx bx-show me-1"></i> {{ __('models.show') }}</a> --}}

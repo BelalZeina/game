@@ -1,8 +1,3 @@
-@include('layouts.dashboard.head')
-
-
-{{-- <script src="{{ asset('asset/js/main.js') }}"></script> --}}
-@include('layouts.dashboard.scripts')
 
 <!DOCTYPE html>
 <html lang="en">
@@ -49,6 +44,7 @@
     <link rel="stylesheet" href={{ asset("asset\\fontawesome\css\all.css") }}>
     <script src={{ asset('asset/js/config.js') }}></script>
 
+    @include('layouts.dashboard.head')
 </head>
 
 <body>
@@ -81,52 +77,38 @@
                                     <p class="text-muted">Admin Game</p>
                                 </div>
                                 <div class="p-2 mt-4">
-                                    <form class="needs-validation" novalidate action="{{ route('admin.login') }}"
-                                        method="POST">
+                                    <form class="needs-validation" novalidate action="{{ route('admin.login') }}" method="POST">
                                         @csrf
 
                                         <div class="mb-3">
-                                            <label for="useremail" class="form-label">phone <span
-                                                    class="text-danger">*</span></label>
-                                            <input type="text" class="form-control" id="userphone" name="phone"
-                                                placeholder="Enter phone number" required>
+                                            <label for="userphone" class="form-label">Phone <span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control @error('phone') is-invalid @enderror" id="userphone" name="phone"
+                                                placeholder="Enter phone number" value="{{ old('phone') }}" required>
                                             @error('phone')
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </div>
 
-
                                         <div class="mb-3">
-                                            <label class="form-label" for="password-input">Password</label>
+                                            <label class="form-label" for="password-input">Password <span class="text-danger">*</span></label>
                                             <div class="position-relative auth-pass-inputgroup">
-                                                <input type="password" class="form-control pe-5 password-input"
+                                                <input type="password" class="form-control pe-5 password-input @error('password') is-invalid @enderror"
                                                     name="password" onpaste="return false" placeholder="Enter password"
                                                     id="password-input" aria-describedby="passwordInput" required>
                                                 <button
                                                     class="btn btn-link position-absolute end-0 top-0 text-decoration-none shadow-none text-muted password-addon"
-                                                    type="button" id="password-addon"><i
-                                                        class="ri-eye-fill align-middle"></i></button>
-                                                {{-- <div class="invalid-feedback"> --}}
+                                                    type="button" id="password-addon"><i class="ri-eye-fill align-middle"></i></button>
                                                 @error('password')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
-                                                {{-- </div> --}}
                                             </div>
                                         </div>
-
-                                        <div class="mb-4">
-                                        </div>
-
-
 
                                         <div class="mt-4">
                                             <button class="btn btn-success w-100" type="submit">Login</button>
                                         </div>
-
-                                        <div class="mt-4 text-center">
-
-                                        </div>
                                     </form>
+
 
                                 </div>
                             </div>
@@ -161,6 +143,8 @@
     <script src={{ asset("asset\\fontawesome\js\all.js") }}></script>
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
+    @include('layouts.dashboard.scripts')
+
 </body>
 
 </html>

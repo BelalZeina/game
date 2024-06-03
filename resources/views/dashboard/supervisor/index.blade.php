@@ -1,5 +1,5 @@
 @extends('layouts.dashboard.app')
-@section('header__title', __('models.contacts'))
+@section('header__title', __('models.supervisors'))
 @section('header__icon', 'fa-solid fa-users')
 @section('main')
     <div class="content-wrapper">
@@ -10,13 +10,13 @@
             <div class="card">
                 <div class="d-flex align-item-center p-4 justify-content-between w-100">
 
-                    <h5 class="card-header p-0">{{__("models.contacts")}}</h5>
+                    <h5 class="card-header p-0">{{__("models.supervisors")}}</h5>
                     <div class="d-flex align-item-center gap-3">
                         <div class="d-felx d-xl-block mr-1"><!-- Hide on small screens -->
                             <button id="deleteSelected" class="btn btn-danger">
                                 <i class="fa-regular fa-trash-can"></i>
                             </button>
-                            {{-- <a class="btn btn-primary" href="{{ route('contacts.create') }}"><i class="fa fa-plus"></i></a> --}}
+                            <a class="btn btn-primary" href="{{ route('supervisors.create') }}"><i class="fa fa-plus"></i></a>
                         </div>
                     </div>
 
@@ -47,27 +47,27 @@
                                     </div>
                                 </th>
                                 <th>{{ __("models.phone") }}</th>
-                                <th>{{ __("models.email") }}</th>
-                                <th>{{ __("models.msg") }}</th>
+                                <th>{{ __("models.img") }}</th>
                                 <th>{{ __("models.action") }}</th>
 
                             </tr>
                         </thead>
                         <tbody>
 
-                            @foreach ($data as $contact)
+                            @foreach ($data as $admin)
                                 <tr>
                                     <th scope="row">
                                         <div class="d-flex align-items-center gap-2">
-                                            <input class="form-check-input row__check" type="checkbox" value="{{ $contact->id }}" />
+                                            <input class="form-check-input row__check" type="checkbox" value="{{ $admin->id }}" />
 
 
-                                            {{ $contact->name }}
+                                            {{ $admin->name }}
                                         </div>
                                     </th>
-                                    <td> {{ $contact->phone }}</td>
-                                    <td> {{ $contact->email }}</td>
-                                    <td> {{ $contact->msg }}</td>
+                                    <td> {{ $admin->phone }}</td>
+                                    <td><img src="{{image_url($admin->img)}}" alt="" class="img-thumbnail rounded-circle" style="
+                                        max-width: 50px;
+                                        height: 50px;"></td>
 
                                     <td class="">
                                         <div class="dropdown">
@@ -76,23 +76,23 @@
                                                 <i class="bx bx-dots-vertical-rounded"></i>
                                             </button>
                                             <div class="dropdown-menu">
-                                                <a class="dropdown-item" href="{{ route('contacts.edit', $contact->id) }}"><i
+                                                <a class="dropdown-item" href="{{ route('supervisors.edit', $admin->id) }}"><i
                                                         class="bx bx-edit me-1"></i> {{ __('models.edit') }}</a>
 
                                                 <a class="dropdown-item cursor-pointer" data-bs-toggle="modal"
-                                                    data-bs-target='{{"#modalToggle-$contact->id"}}'><i class="bx bx-trash me-1"></i>
+                                                    data-bs-target='{{"#modalToggle-$admin->id"}}'><i class="bx bx-trash me-1"></i>
                                                     {{ __('models.d') }}</a>
 
-                                                {{-- <a class="dropdown-item" href="{{ route('contacts.show', $contact->id) }}"><i
+                                                {{-- <a class="dropdown-item" href="{{ route('supervisors.show', $admin->id) }}"><i
                                                         class="bx bx-show me-1"></i> {{ __('models.show') }}</a> --}}
                                             </div>
                                         </div>
                                         @include('components.modalDelete', [
-                                            'action' => 'contacts.destroy',
-                                            'name' => $contact->name,
+                                            'action' => 'supervisors.destroy',
+                                            'name' => $admin->name,
                                             'title' => __('models.Are You Delete'),
-                                            'modalToggle' => "modalToggle-$contact->id",
-                                            'id' => $contact->id,
+                                            'modalToggle' => "modalToggle-$admin->id",
+                                            'id' => $admin->id,
                                         ])
                                     </td>
                                 </tr>
@@ -143,7 +143,7 @@
 
                 if (selectedIds.length > 0) {
                     $.ajax({
-                        url: "{{ route('contacts.deleteSelected') }}",
+                        url: "{{ route('supervisors.deleteSelected') }}",
                         type: "POST",
                         data: { ids: selectedIds },
                         headers: {

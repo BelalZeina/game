@@ -9,6 +9,13 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:users-read')->only(['index']);
+        $this->middleware('permission:users-create')->only(['create', 'store']);
+        $this->middleware('permission:users-update')->only(['edit', 'update']);
+        $this->middleware('permission:users-delete')->only(['destroy']);
+    }
     public function index(Request $request)
     {
         $perPage = $request->get('per_page', 10); // Default to 10 if not specified
@@ -110,9 +117,15 @@ class UserController extends Controller
 
             // Calculate new expiration date based on the selected option
             if ($selectedOption == '1') {
+                if($user->active==1||$user->active==2){
+                    return redirect()->back()->with('error' , __('models.invalid_selection'));
+                }
                 $newExpireAt = $currentDate->copy()->addDay();
                 $active = 1;
             } elseif ($selectedOption == '2') {
+                if($user->active==1||$user->active==2){
+                    return redirect()->back()->with('error' , __('models.invalid_selection'));
+                }
                 $newExpireAt = $currentDate->copy()->addDays(2);
                 $active = 2;
             } elseif ($selectedOption == '30') {

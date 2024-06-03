@@ -1,3 +1,6 @@
+@php
+    $user=auth("admin")->user();
+@endphp
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
     <div class="app-brand demo ">
         <a href="{{ route('dashboard.index') }}" class="app-brand-link d-flex align-items-center gap-2 ">
@@ -21,13 +24,19 @@
             </a>
         </li>
 
+        @if($user->hasPermission('roles-read'))
+        <!-- roles -->
+        <li class="menu-item {{ isActiveRoute(['roles.index','roles.create','roles.edit']) }} ">
+            <a href="{{ route('roles.index') }}" class="menu-link d-flex align-items-center gap-2">
+                <i class="fa-solid fa-star"></i>
+                <div data-i18n="Analytics">{{ __('models.roles') }}</div>
+            </a>
+        </li>
+        @endif
 
 
 
-        <!-- Layouts -->
-
-
-
+        @if($user->hasPermission('admins-read'))
 
         <li class="menu-item {{ isActiveRoute(['admins.index','admins.edit','admins.create' ,'admins.show','users.index','users.edit','users.create' ,'users.show']) }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle d-flex align-items-center gap-2">
@@ -36,37 +45,42 @@
             </a>
             <ul class="menu-sub">
 
-
+                @if($user->hasPermission('admins-read'))
                 <li class="menu-item {{ isActiveRoute(['admins.index','admins.edit','admins.create' ,'admins.show']) }}">
                     <a href="{{ route('admins.index') }}" class="menu-link">
                         <div data-i18n="Connections">{{ __('models.admins') }}</div>
                     </a>
                 </li>
+                @endif
 
+                @if($user->hasPermission('admins-read'))
+                <li class="menu-item {{ isActiveRoute(['supervisors.index','supervisors.edit','supervisors.create' ,'supervisors.show']) }}">
+                    <a href="{{ route('supervisors.index') }}" class="menu-link">
+                        <div data-i18n="Connections">{{ __('models.supervisors') }}</div>
+                    </a>
+                </li>
+                @endif
 
+                @if($user->hasPermission('users-read'))
                 <li class="menu-item {{ isActiveRoute(['users.index','users.edit','users.create' ,'users.show']) }}">
                     <a href="{{ route('users.index') }}" class="menu-link">
                         <div data-i18n="Connections">{{ __('models.users') }}</div>
                     </a>
                 </li>
+                @endif
             </ul>
         </li>
-
-        <li class="menu-item {{ isActiveRoute(['contacts.index']) }}">
-            <a href="javascript:void(0);" class="menu-link menu-toggle d-flex align-items-center gap-2">
-                <i class="fa-solid fa-earth-americas"></i>
-                <div data-i18n="Account Settings">الموقع الخارجى</div>
-            </a>
-            <ul class="menu-sub">
+        @endif
 
 
-                <li class="menu-item {{ isActiveRoute(['contacts.index']) }}">
-                    <a href="{{ route('contacts.index') }}" class="menu-link">
-                        <div data-i18n="Connections">تواصل معنا</div>
-                    </a>
-                </li>
-            </ul>
-        </li>
+        @if($user->hasPermission('contact_us-read'))
+            <li class="menu-item {{ isActiveRoute(['contacts.index']) }}">
+                <a href="{{ route('contacts.index') }}" class="menu-link d-flex align-items-center gap-2">
+                    <i class="fa-solid fa-message"></i>
+                    <div data-i18n="Connections">تواصل معنا</div>
+                </a>
+            </li>
+        @endif
 
 
 

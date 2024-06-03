@@ -81,7 +81,7 @@
 
                                                 <a class="dropdown-item cursor-pointer" data-bs-toggle="modal"
                                                     data-bs-target='{{"#modalToggle-$admin->id"}}'><i class="bx bx-trash me-1"></i>
-                                                    {{ __('models.delete') }}</a>
+                                                    {{ __('models.d') }}</a>
 
                                                 {{-- <a class="dropdown-item" href="{{ route('admins.show', $admin->id) }}"><i
                                                         class="bx bx-show me-1"></i> {{ __('models.show') }}</a> --}}
@@ -113,6 +113,19 @@
         let table = new DataTable('#myTable');
     </script>
     <script>
+        $(document).ready(function() {
+            // When the header checkbox is clicked
+            $('#check__box').click(function() {
+                // Check if it's checked or not
+                var isChecked = $(this).prop('checked');
+
+                // Iterate through each row in the table
+                $('#myTable tbody tr').each(function() {
+                    // Set the checkbox in each row to the same state as the header checkbox
+                    $(this).find('.form-check-input.row__check').prop('checked', isChecked);
+                });
+            });
+        });
         $('#search_input').on('keyup', function() {
             table.search(this.value).draw();
         });

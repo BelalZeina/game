@@ -1,10 +1,12 @@
 <?php
 
 
-use App\Http\Controllers\ContactsController;
 
 use App\Http\Controllers\Dashboard\AdminController;
 use App\Http\Controllers\Dashboard\AuthController;
+use App\Http\Controllers\Dashboard\ContactsController;
+use App\Http\Controllers\Dashboard\RoleController;
+use App\Http\Controllers\Dashboard\SupervisorController;
 use App\Http\Controllers\Dashboard\UserController;
 use App\Http\Controllers\ProfileController;
 
@@ -44,24 +46,31 @@ Route::get('/opt', function () {
 
 
 
-
 Route::get('login', [AuthController::class, 'create'])->name("login");
 Route::post('login', [AuthController::class, 'login'])->name("admin.login");
 Route::get('logout', [AuthController::class, 'logout'])->name("logout");
+
 Route::get('/', function () { if (auth("admin")->check()) {return view('dashboard.index');} return view('auth.login');})->name("home")->middleware('localization');
 
 Route::middleware(['localization', "auth:admin"])->group(function () {
     Route::get('/dashboard', function () { return view('dashboard.index');})->name("dashboard.index");
 
     Route::resource("contacts", ContactsController::class);
+    Route::post('/contacts/deleteSelected', [ContactsController::class,'deleteSelected'])->name('contacts.deleteSelected');
+
+
+    Route::resource("roles", RoleController::class);
+    Route::post('/roles/deleteSelected', [RoleController::class,'deleteSelected'])->name('roles.deleteSelected');
 
     Route::resource("admins", AdminController::class);
     Route::post('/admins/deleteSelected', [AdminController::class,'deleteSelected'])->name('admins.deleteSelected');
+
+    Route::resource("supervisors", SupervisorController::class);
+    Route::post('/supervisors/deleteSelected', [SupervisorController::class,'deleteSelected'])->name('supervisors.deleteSelected');
 
     Route::resource("users", UserController::class);
     Route::post('/users/deleteSelected', [UserController::class,'deleteSelected'])->name('users.deleteSelected');
     Route::post('/users/active/{id}', [UserController::class,'active'])->name('users.active');
 
 
-    // require __DIR__ . '/auth.php';
 });

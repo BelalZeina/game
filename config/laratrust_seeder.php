@@ -24,8 +24,7 @@ return [
 
         ],
 
-        'admin' => [] ,
-        'user' => [] ,
+        'supervisor' => [] ,
 
 
     ],
