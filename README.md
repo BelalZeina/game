@@ -67,10 +67,7 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
 =======
-# Sportat-Website
-Sportat Website
+# Game-Website
+Game Website
 >>>>>>> 70dd6c9af902e487b18861f856a24dfe279abe35
 =======
-# Clarity-Clean-
-Clarity Clean 
->>>>>>> 6f5f5b70f879a8a935441c80658442e257a8f237
