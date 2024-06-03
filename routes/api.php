@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\HomeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -24,7 +25,6 @@ Route::post('/logout' , [AuthController::class , 'logout'])->middleware("auth:sa
 Route::middleware('auth:sanctum')->group(function () {
 
     // auth user
-
     Route::group(['prefix' => 'user'] , function(){
         Route::post('/update-profile'  , [AuthController::class , 'update_profile']);
         Route::get('/get-profile'      , [AuthController::class , 'get_profile']);
@@ -39,4 +39,5 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 // ====================== routes not auth ===========================================
 
+Route::post('/contact-us', [HomeController::class, 'contact_us']);
 
