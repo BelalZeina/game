@@ -9,7 +9,13 @@ aria-hidden="true">
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="form-group m-3">
-                <input type="date" class="form-control" name="date" value="{{old("date")}}">
+                {{-- <input type="date" class="form-control" name="date" value="{{old("date")}}"> --}}
+                <select name="date" class="form-control" id="">
+                    <option value="">{{__('models.select')}}</option>
+                    <option value="1">{{"1 ".__('models.day')}}</option>
+                    <option value="2">{{"2 ".__('models.day')}}</option>
+                    <option value="30">{{__('models.month')}}</option>
+                </select>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger">

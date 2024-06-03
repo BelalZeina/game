@@ -44,7 +44,7 @@ class AuthController extends Controller
     {
             $user = User::where('phone' , $request->phone)->first();
             if ($user &&  Hash::check($request->password, $user->password)) {
-                if($user->active==0||$user->expire_at < now()){
+                if($user->expire_at < now()){
                     return sendResponse(403 ,'your subscripe ended.');
                 }
                 $token = $user->createToken('token')->plainTextToken;

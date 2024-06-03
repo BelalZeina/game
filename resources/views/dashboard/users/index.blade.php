@@ -4,7 +4,9 @@
 @section('main')
     <div class="content-wrapper">
         <!-- Content -->
-
+@php
+    use Carbon\Carbon;
+@endphp
 
         <div class="container-xxl flex-grow-1 container-p-y">
             <div class="card">
@@ -16,7 +18,7 @@
                             <button id="deleteSelected" class="btn btn-danger">
                                 <i class="fa-regular fa-trash-can"></i>
                             </button>
-                            <a class="btn btn-primary" href="{{ route('users.create') }}"><i class="fa fa-plus"></i></a>
+                            {{-- <a class="btn btn-primary" href="{{ route('users.create') }}"><i class="fa fa-plus"></i></a> --}}
                         </div>
                     </div>
 
@@ -72,14 +74,14 @@
                                         height: 50px;">
                                     </td>
                                     <td>
-                                        @if ($user->expire_at < now())
-                                        <div class="btn btn-icon btn-info"><i class="fa-solid fa-power-off"style="color:#fff"></i></div>
+                                        @if (optional(Carbon::parse($user->expire_at))->isPast())
+                                        <div class="btn btn-icon btn-dark"><i class="fa-solid fa-power-off" style="color:#fff"></i></div>
                                         @else
-                                        <div class="btn btn-icon btn-dark"><i class="fa-solid fa-power-off"style="color:#fff"></i></div>
+                                        <div class="btn btn-icon btn-info"><i class="fa-solid fa-power-off" style="color:#fff"></i></div>
                                         @endif
                                     </td>
                                     <td>
-                                        {{ $user->expire_at?->format('Y-m-d') }}
+                                        {{ optional(Carbon::parse($user->expire_at))->format('Y-m-d') }}
                                     </td>
                                     <td class="">
                                         <div class="dropdown">
@@ -138,6 +140,18 @@
     <script>
         $('#search_input').on('keyup', function() {
             table.search(this.value).draw();
+        });        $(document).ready(function() {
+            // When the header checkbox is clicked
+            $('#check__box').click(function() {
+                // Check if it's checked or not
+                var isChecked = $(this).prop('checked');
+
+                // Iterate through each row in the table
+                $('#myTable tbody tr').each(function() {
+                    // Set the checkbox in each row to the same state as the header checkbox
+                    $(this).find('.form-check-input.row__check').prop('checked', isChecked);
+                });
+            });
         });
 
         $(document).ready(function() {

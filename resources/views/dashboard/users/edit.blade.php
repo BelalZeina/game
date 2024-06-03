@@ -1,5 +1,5 @@
 @extends('layouts.dashboard.app')
-@section('header__title', __('models.user'))
+@section('header__title', __('models.users'))
 
 @section('main')
     <div class="content-wrapper">

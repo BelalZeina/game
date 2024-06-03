@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -101,14 +102,39 @@ class UserController extends Controller
     }
     public function active(Request $request,$id)
     {
-        $date = $request->date;
-        $admin = User::find($id);
-        if($admin){
-            $admin->update([
-                "active"=>1,
-                "expire_at"=> $date,
+        $selectedOption = $request->date;
+        $user = User::find($id);
+
+        if ($user) {
+            $currentDate = Carbon::now();
+
+            // Calculate new expiration date based on the selected option
+            if ($selectedOption == '1') {
+                $newExpireAt = $currentDate->copy()->addDay();
+                $active = 1;
+            } elseif ($selectedOption == '2') {
+                $newExpireAt = $currentDate->copy()->addDays(2);
+                $active = 2;
+            } elseif ($selectedOption == '30') {
+                $newExpireAt = $currentDate->copy()->addMonth();
+                $active = 30;
+            } else {
+                // If no valid option is selected, return with an error message
+                return redirect()->back()->with('error' , __('models.invalid_selection'));
+            }
+
+            //  Check if the user is currently active and adjust the new expiration date accordingly
+            if (($user->active==1||$user->active==2 ) && $user->expire_at < now()) {
+                $newExpireAt = $currentDate->copy()->addDays((30-$user->active));
+            }
+
+            // Update the user record
+            $user->update([
+                'active' => $active,
+                'expire_at' => $newExpireAt,
             ]);
         }
+
         return redirect(route('users.index'))->with('success', __('models.active_successfully'));
     }
 }

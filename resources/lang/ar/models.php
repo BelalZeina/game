@@ -19,6 +19,8 @@ return [
     'name_ar'                   => 'الاسم باللغه العربيه',
     'name_en'                   => 'الاسم باللغه الانجليزيه',
     'name'                      => ' الاسم',
+    'month'                      => ' شهر',
+    'day'                      => ' يوم',
     'added_successfully'        => 'تمت عمليه الاضافه بنجاح' ,
     'updated_successfully'      => 'تمت عمليه التعديل بنجاح' ,
     'deleted_successfully'      => 'تمت عمليه الحذف بنجاح' ,
@@ -124,6 +126,10 @@ return [
     'Total orders' => 'إجمالي الطلبات',
     'edited_successfully' => 'تم التعديل بنجاح',
 
+    'select'         => 'اختر',
+    'active'         => 'تفعيل',
+
+
     'offer'         => 'العروض',
     'offers'        => 'العروض',
     'add_offer'     => 'إضافة عرض',
@@ -165,6 +171,7 @@ return [
     'msg'                          => 'الرساله' ,
     'gmail'                        => 'الجيميل' ,
     'settings'                     => 'الاعدادات' ,
+    'Are You Active'                     => 'هل تريد تفعيل' ,
 
 
 ];

@@ -24,6 +24,11 @@ return [
     'add_slider'                => 'add slider',
     'slider'                    => 'slider' ,
     'sliders'                    => 'sliders' ,
+    'select'         => 'select',
+    'day'         => 'day',
+    'month'         => 'month',
+    'active'         => 'active',
+    'Are You Active'         => 'Are You Active',
 
 
     'proten'                    => 'proten' ,
