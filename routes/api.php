@@ -40,4 +40,5 @@ Route::middleware('auth:sanctum')->group(function () {
 // ====================== routes not auth ===========================================
 
 Route::post('/contact-us', [HomeController::class, 'contact_us']);
+Route::get('/videos', [HomeController::class, 'videos']);
 

@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 
+use App\Http\Resources\VideoResource;
 use App\Models\Contact;
 
+use App\Models\Video;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -19,7 +21,6 @@ class HomeController extends Controller
     {
         // Validate incoming request data
         $validator = Validator::make($request->all(), [
-
             'name' => 'required|string',
             'email' => 'required|email',
             'phone' => 'required|string',
@@ -33,8 +34,13 @@ class HomeController extends Controller
 
         // Create a new contact us entry
         $contactUs = Contact::create($request->all());
-
         // Return a success response
         return response()->json(['message' => 'Contact us entry created successfully', 'data' => $contactUs], 201);
+    }
+
+    public function videos(Request $request)
+    {
+        $data = Video::paginate(10);
+        return VideoResource::collection($data);
     }
 }
