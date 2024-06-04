@@ -18,8 +18,8 @@ class VideoResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'desc' => $this->desc,
-            'video' =>$this->video? asset("storage/".$this->video) : null,
-            'img' => $this->img? asset("storage/".$this->img) : null,
+            'video' =>$this->video? url("storage/".$this->video) : null,
+            'img' => $this->img? url("storage/".$this->img) : null,
         ];
     }
 }
