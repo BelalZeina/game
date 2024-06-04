@@ -34,26 +34,22 @@ class RoleController extends Controller
 
     public function create()
     {
-         return view('dashboard.roles.create');
+        return view('dashboard.roles.create');
     }
 
 
     public function store(Request $request)
     {
-
-       $data = $request->only('name');
-       $role =Role::create($data);
-       $role->syncPermissions($request->permissions);
-
+        $data = $request->only('name');
+        $role =Role::create($data);
+        $role->syncPermissions($request->permissions);
         return redirect(route('roles.index'))->with('success', __('models.added_successfully'));
-
     }
 
     public function edit($id)
     {
         $role  =Role::find($id);
         return view('dashboard.roles.edit' , compact('role'));
-
     }
 
     public function show($id){
@@ -67,22 +63,16 @@ class RoleController extends Controller
         $data = $request->only('name');
         $role->update($data);
 
-
-
         $role->syncPermissions($request->permissions);
         return redirect(route('roles.index'))->with('success', __('models.added_successfully'));
-
     }
 
 
     public function destroy($id)
     {
-         $role =Role::find($id);
-
+        $role =Role::find($id);
         $role->delete();
-
         return redirect(route('roles.index'))->with('success', __('models.deleted_successfully'));
-
     }
 
     public function deleteSelected(Request $request)
@@ -96,4 +86,5 @@ class RoleController extends Controller
         }
         return response()->json(['success' => true]);
     }
+
 }

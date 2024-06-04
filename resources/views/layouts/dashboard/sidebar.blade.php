@@ -38,7 +38,7 @@
 
         @if($user->hasPermission('admins-read'))
 
-        <li class="menu-item {{ isActiveRoute(['admins.index','admins.edit','admins.create' ,'admins.show','users.index','users.edit','users.create' ,'users.show']) }}">
+        <li class="menu-item {{ isActiveRoute(['admins.index','admins.edit','admins.create' ,'admins.show','users.index','users.edit','users.create' ,'users.show','supervisors.index','supervisors.edit','supervisors.create']) }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle d-flex align-items-center gap-2">
                 <i class="fa-solid fa-users"></i>
                 <div data-i18n="Account Settings">{{ __('models.users') }} </div>
@@ -72,12 +72,20 @@
         </li>
         @endif
 
+        @if($user->hasPermission('videos-read'))
+            <li class="menu-item {{ isActiveRoute(['videos.index','videos.edit','videos.create']) }}">
+                <a href="{{ route('videos.index') }}" class="menu-link d-flex align-items-center gap-2">
+                    <i class="fa-solid fa-video"></i>
+                    <div data-i18n="Connections">{{__("models.videos")}}</div>
+                </a>
+            </li>
+        @endif
 
         @if($user->hasPermission('contact_us-read'))
             <li class="menu-item {{ isActiveRoute(['contacts.index']) }}">
                 <a href="{{ route('contacts.index') }}" class="menu-link d-flex align-items-center gap-2">
                     <i class="fa-solid fa-message"></i>
-                    <div data-i18n="Connections">تواصل معنا</div>
+                    <div data-i18n="Connections">{{__("models.contact_us")}}</div>
                 </a>
             </li>
         @endif

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
+use App\Models\Role;
 use Illuminate\Http\Request;
 
 class SupervisorController extends Controller
@@ -21,14 +22,17 @@ class SupervisorController extends Controller
     public function index(Request $request)
     {
         $perPage = $request->get('per_page', 10); // Default to 10 if not specified
-        $data  = Admin::whereHasRole("supervisor")->get();
+        $data  = Admin::whereDoesntHave('roles', function($query) {
+            $query->where('name', 'owner');
+        })->paginate($perPage);
         return view("dashboard.supervisor.index",compact("data"));
     }
 
 
     public function create()
     {
-        return view("dashboard.supervisor.create",);
+        $roles=Role::all();
+        return view("dashboard.supervisor.create",compact("roles"));
     }
 
     public function store(Request $request)
@@ -48,7 +52,7 @@ class SupervisorController extends Controller
         }
 
         $admin =Admin::create($data);
-        $admin->syncRoles(['supervisor' => 2]);
+        $admin->syncRoles([$request->role]);
 
         return redirect(route('supervisors.index'))->with('success', __('models.added_successfully'));
     }
@@ -64,7 +68,8 @@ class SupervisorController extends Controller
     public function edit($id)
     {
         $data=Admin::find($id);
-        return view("dashboard.supervisor.edit",compact("data"));
+        $roles=Role::all();
+        return view("dashboard.supervisor.edit",compact("data",'roles'));
     }
 
 
@@ -85,6 +90,7 @@ class SupervisorController extends Controller
             $data['img'] = UploadImage($request->file('img'),"users");
         }
         $admin->update($data);
+        $admin->syncRoles([$request->role]);
         return redirect(route('supervisors.index'))->with('success', __('models.edited_successfully'));
     }
 
@@ -98,15 +104,14 @@ class SupervisorController extends Controller
     }
 
     public function deleteSelected(Request $request)
-{
-    $ids = $request->ids;
-    // return response()->json(['success' => true ,"ids"=> $ids]);
-    foreach ($ids as $id) {
-        $admin = Admin::find($id);
-        if ($admin) {
-            $admin->delete();
+    {
+        $ids = $request->ids;
+        foreach ($ids as $id) {
+            $admin = Admin::find($id);
+            if ($admin) {
+                $admin->delete();
+            }
         }
+        return response()->json(['success' => true]);
     }
-    return response()->json(['success' => true]);
-}
 }

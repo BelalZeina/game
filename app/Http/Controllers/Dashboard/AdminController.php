@@ -28,7 +28,7 @@ class AdminController extends Controller
 
     public function create()
     {
-        return view("dashboard.admins.create", );
+        return view("dashboard.admins.create");
 
     }
 

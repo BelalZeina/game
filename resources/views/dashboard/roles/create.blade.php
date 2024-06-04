@@ -83,7 +83,7 @@
                         </div>
 
                         <div class="col-12">
-                            <button class="btn btn-primary" type="submit">{{ __('models.submit') }}</button>
+                            <button type="submit" class="btn btn-success m-2">{{ __("Submit") }}</button>
                         </div>
                     </form>
 

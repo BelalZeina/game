@@ -42,12 +42,26 @@
                             @enderror
                         </div>
                         <div class="form-group mb-3">
+                            <label>{{ __('models.role') }}</label>
+                            <select name="role" class="form-control" required>
+                                <option value="">{{ __('models.select_role') }}</option>
+                                @foreach ($roles as $role)
+                                    <option value="{{ $role->id }}">{{ $role->name }}</option>
+                                @endforeach
+                            </select>
+                            @error('role')
+                                <span class="invalid-feedback">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                        <div class="form-group mb-3">
                             <label>{{ __("models.img") }}</label>
                             <input type="file" name="img" class="form-control @error('img') is-invalid @enderror" id="imageInput" accept="image/*">
                             @error('img')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
+
                         <img id="imagePreview" class="image-preview mb-3" src="{{ isset($data) && $data->img ? image_url($data->img) : '' }}" alt="Image Preview" style="{{ isset($data) && $data->img ? '' : 'display:none;' }}">
                         <br>
                         <button type="submit" class="btn btn-success m-2">{{ __("Submit") }}</button>

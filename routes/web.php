@@ -8,6 +8,7 @@ use App\Http\Controllers\Dashboard\ContactsController;
 use App\Http\Controllers\Dashboard\RoleController;
 use App\Http\Controllers\Dashboard\SupervisorController;
 use App\Http\Controllers\Dashboard\UserController;
+use App\Http\Controllers\Dashboard\VideoController;
 use App\Http\Controllers\ProfileController;
 
 use Illuminate\Support\Facades\Artisan;
@@ -67,6 +68,10 @@ Route::middleware(['localization', "auth:admin"])->group(function () {
 
     Route::resource("supervisors", SupervisorController::class);
     Route::post('/supervisors/deleteSelected', [SupervisorController::class,'deleteSelected'])->name('supervisors.deleteSelected');
+
+    Route::resource("videos", VideoController::class);
+    Route::post('/videos/deleteSelected', [VideoController::class,'deleteSelected'])->name('videos.deleteSelected');
+    Route::post('/upload.file' , [VideoController::class , 'uploadFile'])->name('upload.file');
 
     Route::resource("users", UserController::class);
     Route::post('/users/deleteSelected', [UserController::class,'deleteSelected'])->name('users.deleteSelected');

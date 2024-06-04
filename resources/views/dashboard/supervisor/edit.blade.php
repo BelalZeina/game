@@ -47,6 +47,18 @@
                             @enderror
                         </div>
                         <div class="form-group mb-3">
+                            <label>{{ __('models.role') }}</label>
+                            <select name="role" class="form-control" required>
+                                <option value="">{{ __('models.select_role') }}</option>
+                                @foreach ($roles as $role)
+                                    <option value="{{ $role->id }}" {{ $data->roles->contains($role) ? 'selected' : '' }}>{{ $role->name }}</option>
+                                @endforeach
+                            </select>
+                            @error('role')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div class="form-group mb-3">
                             <label>{{ __('models.img') }}</label>
                             <input type="file" name="img" class="form-control @error('img') is-invalid @enderror" id="imageInput" accept="image/*">
                             @error('img')
