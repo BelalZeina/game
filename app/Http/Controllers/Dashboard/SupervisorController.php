@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Exports\SupervisorsExport;
 use App\Http\Controllers\Controller;
+use App\Imports\SupervisorsImport;
 use App\Models\Admin;
 use App\Models\Role;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Maatwebsite\Excel\Facades\Excel;
 
 class SupervisorController extends Controller
 {
@@ -21,10 +25,10 @@ class SupervisorController extends Controller
 
     public function index(Request $request)
     {
-        $perPage = $request->get('per_page', 10); // Default to 10 if not specified
+        // $perPage = $request->get('per_page', 10); // Default to 10 if not specified
         $data  = Admin::whereDoesntHave('roles', function($query) {
             $query->where('name', 'owner');
-        })->paginate($perPage);
+        })->get();
         return view("dashboard.supervisor.index",compact("data"));
     }
 
@@ -113,5 +117,28 @@ class SupervisorController extends Controller
             }
         }
         return response()->json(['success' => true]);
+    }
+
+    public function export()
+    {
+            return Excel::download(new SupervisorsExport(), 'supervisors.xlsx');
+    }
+
+    public function import(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'file' => 'required|mimes:xlsx,xls,csv,CSV|max:10240',
+        ]);
+        // If validation fails, return the validation errors
+        if ($validator->fails()) {
+            return redirect()->route('supervisors.index')->with('error', $validator->errors()->first());
+        }
+        $file = $request->file('file');
+        $done=Excel::import(new SupervisorsImport, $file);
+        if($done){
+            return redirect()->route('supervisors.index')->with('success', 'تم تحميل الملف بنجاح.');
+        }else{
+            return redirect()->route('supervisors.index')->with('error', 'يرجى مطابقة البيانات البجدول المرفق ,والتاكد من وجودها في قواعد البيانات');
+        }
     }
 }

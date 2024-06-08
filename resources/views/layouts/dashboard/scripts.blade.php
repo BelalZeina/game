@@ -45,7 +45,7 @@
         });
     });
 </script>
-<script>
+{{-- <script>
     $(document).ready(function () {
         $('#dt-length-0').change(function () {
             const perPage = $(this).val();
@@ -54,7 +54,7 @@
             window.location.href = url.href;
         });
     });
-</script>
+</script> --}}
 
 @if (Session::has('success'))
 <script>

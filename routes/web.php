@@ -65,9 +65,13 @@ Route::middleware(['localization', "auth:admin"])->group(function () {
 
     Route::resource("admins", AdminController::class);
     Route::post('/admins/deleteSelected', [AdminController::class,'deleteSelected'])->name('admins.deleteSelected');
+    Route::get('export/admins', [AdminController::class,'export'])->name('admins.export');
+    Route::post('import/admins', [AdminController::class,'import'])->name('admins.import');
 
     Route::resource("supervisors", SupervisorController::class);
     Route::post('/supervisors/deleteSelected', [SupervisorController::class,'deleteSelected'])->name('supervisors.deleteSelected');
+    Route::get('export/supervisors', [SupervisorController::class,'export'])->name('supervisors.export');
+    Route::post('import/supervisors', [SupervisorController::class,'import'])->name('supervisors.import');
 
     Route::resource("videos", VideoController::class);
     Route::post('/videos/deleteSelected', [VideoController::class,'deleteSelected'])->name('videos.deleteSelected');

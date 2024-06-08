@@ -18,8 +18,8 @@ class UserController extends Controller
     }
     public function index(Request $request)
     {
-        $perPage = $request->get('per_page', 10); // Default to 10 if not specified
-        $data = User::paginate($perPage);
+        // $perPage = $request->get('per_page', 10); // Default to 10 if not specified
+        $data = User::get();
         return view("dashboard.users.index", compact("data"));
     }
 

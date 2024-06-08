@@ -164,6 +164,14 @@ return [
     'Are you sure you want to delete this' => 'Are you sure you want to delete this',
     'Delete' => 'Delete',
     'Cancel' => 'Cancel',
+    'export'                        => 'export' ,
+    'import'                     => 'import' ,
+
+
+    'supervisors'         => 'supervisors',
+    'supervisor'        => 'supervisors',
+    'add_supervisor'     => 'add supervisor',
+    'edit_supervisor'    =>"edit supervisor",
 ];
 
 

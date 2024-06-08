@@ -4,6 +4,8 @@ namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
+use Maatwebsite\Excel\Validators\ValidationException;
+
 
 class Handler extends ExceptionHandler
 {
@@ -45,4 +47,19 @@ class Handler extends ExceptionHandler
             //
         });
     }
+
+    public function render($request, Throwable $exception)
+    {
+        if ($exception instanceof ValidationException) {
+            $failures = $exception->failures();
+            foreach ($failures as $failure) {
+                // يمكنك تعديل الرسالة لتشمل التفاصيل التي ترغب فيها
+                session()->flash('error', $failure->errors()[0]);
+            }
+            return redirect()->back();
+        }
+
+        return parent::render($request, $exception);
+    }
+
 }

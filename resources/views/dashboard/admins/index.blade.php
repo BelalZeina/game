@@ -17,7 +17,17 @@
                                 <i class="fa-regular fa-trash-can"></i>
                             </button>
                             <a class="btn btn-primary" href="{{ route('admins.create') }}"><i class="fa fa-plus"></i></a>
+                            <a class="btn btn-success" href="{{ route('admins.export') }}" title="{{__("models.export")}}"><i class="fa-solid fa-file-export"></i></a>
+                            <a class="btn btn-success cursor-pointer" data-bs-toggle="modal" title="{{ __('models.import') }}"
+                            data-bs-target='#modalToggle'><i class="fa-solid fa-file-import"></i>
+                            </a>
                         </div>
+                        @include('components.modalImport', [
+                            'action' => 'admins.import',
+                            'name' =>__('models.admins'),
+                            'title' => __('models.import'),
+                            'modalToggle' => "modalToggle",
+                        ])
                     </div>
 
                 </div>
@@ -27,12 +37,6 @@
                     <div class="d-flex groups__button align-item-center gap-3">
                         <input type="text" class="form-control" style="width:200px" id="search_input"
                             placeholder="{{ __('models.search') }}" aria-describedby="defaultFormControlHelp" />
-                            <select name="myTable_length" aria-controls="myTable" class="dt-input" id="dt-length-0">
-                                <option value="10" {{ request()->get('per_page') == 10 ? 'selected' : '' }}>10</option>
-                                <option value="25" {{ request()->get('per_page') == 25 ? 'selected' : '' }}>25</option>
-                                <option value="50" {{ request()->get('per_page') == 50 ? 'selected' : '' }}>50</option>
-                                <option value="100" {{ request()->get('per_page') == 100 ? 'selected' : '' }}>100</option>
-                            </select>
 
                     </div>
                 </div>
@@ -107,6 +111,8 @@
 @endsection
 
 @section('scripts-dashboard')
+<link href="{{ asset('asset/datatables/datatables.bundle.rtl.css') }}" rel="stylesheet"
+        type="text/css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdn.datatables.net/2.0.7/js/dataTables.js"></script>
     <script>

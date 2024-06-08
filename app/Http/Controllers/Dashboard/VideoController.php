@@ -24,8 +24,8 @@ class VideoController extends Controller
 
     public function index(Request $request)
     {
-        $perPage = $request->get('per_page', 10); // Default to 10 if not specified
-        $data = Video::paginate($perPage);
+        // $perPage = $request->get('per_page', 10); // Default to 10 if not specified
+        $data = Video::get();
         return view('dashboard.videos.index',compact("data"));
     }
 
@@ -78,6 +78,15 @@ class VideoController extends Controller
 
     public function store(Request $request)
     {
+        $request->validate([
+            'name_ar' => 'required|string|max:255',
+            'name_en' => 'required|string|max:255',
+            'desc_ar' => 'required|string',
+            'desc_en' => 'required|string',
+            'video' => 'nullable|string|max:255',
+            'img' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
         $data = $request->except('video', 'img');
         if (session('link_video')) {
             $data['video'] = session('time_video');

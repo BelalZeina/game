@@ -135,6 +135,11 @@ return [
     'add_offer'     => 'إضافة عرض',
     'edit_offer'    => 'تعديل العرض',
 
+    'supervisors'         => 'المراقبين',
+    'supervisor'        => 'المراقبين',
+    'add_supervisor'     => 'إضافة مراقب',
+    'edit_supervisor'    => 'تعديل المراقب',
+
     'question1'         => 'السؤال الاول',
     'question2'         => 'السؤال الثاني',
     'contact'         => 'تواصل معنا',
@@ -171,6 +176,8 @@ return [
     'msg'                          => 'الرساله' ,
     'gmail'                        => 'الجيميل' ,
     'settings'                     => 'الاعدادات' ,
+    'export'                        => 'تصدير' ,
+    'import'                     => 'استيراد' ,
     'Are You Active'                     => 'هل تريد تفعيل' ,
 
 

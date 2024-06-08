@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Exports\AdminExport;
 use App\Http\Controllers\Controller;
+use App\Imports\AdminImport;
 use App\Models\Admin;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Maatwebsite\Excel\Facades\Excel;
 
 class AdminController extends Controller
 {
@@ -109,5 +113,28 @@ class AdminController extends Controller
             }
         }
         return response()->json(['success' => true]);
+    }
+
+    public function export()
+    {
+            return Excel::download(new AdminExport(), 'admins.xlsx');
+    }
+
+    public function import(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'file' => 'required|mimes:xlsx,xls,csv,CSV|max:10240',
+        ]);
+        // If validation fails, return the validation errors
+        if ($validator->fails()) {
+            return redirect()->route('admins.index')->with('error', $validator->errors()->first());
+        }
+        $file = $request->file('file');
+        $done=Excel::import(new AdminImport, $file);
+        if($done){
+            return redirect()->route('admins.index')->with('success', 'تم تحميل الملف بنجاح.');
+        }else{
+            return redirect()->route('admins.index')->with('error', 'يرجى مطابقة البيانات البجدول المرفق ,والتاكد من وجودها في قواعد البيانات');
+        }
     }
 }
