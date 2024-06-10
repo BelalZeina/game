@@ -1,5 +1,5 @@
 @extends('layouts.dashboard.app')
-@section('header__title', __('models.admin'))
+@section('header__title', __('models.videos'))
 
 @section('main')
     <div class="content-wrapper">

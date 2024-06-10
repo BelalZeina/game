@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-
+Route::middleware('lang')->group(function () {
 Route::post('/register' , [AuthController::class , 'register']);
 Route::post('/login' , [AuthController::class , 'login']);
 Route::post('/logout' , [AuthController::class , 'logout'])->middleware("auth:sanctum");
@@ -32,8 +32,12 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/change-password' , [AuthController::class , 'change_Password']);
     });
 
+    Route::get('/levels', [HomeController::class, 'levels']);
+    Route::get('/level/{id}', [HomeController::class, 'level']);
+    Route::get('/exam/{id}', [HomeController::class, 'exam']);
+    Route::get('/exams', [HomeController::class, 'exams']);
 
-
+    Route::post('/store/score', [HomeController::class, 'store_score']);
 
 
 });
@@ -42,3 +46,4 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::post('/contact-us', [HomeController::class, 'contact_us']);
 Route::get('/videos', [HomeController::class, 'videos']);
 
+});

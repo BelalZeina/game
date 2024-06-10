@@ -172,6 +172,17 @@ return [
     'supervisor'        => 'supervisors',
     'add_supervisor'     => 'add supervisor',
     'edit_supervisor'    =>"edit supervisor",
+
+    'user'         => 'user',
+    'level'         => 'level',
+    'exams'         => 'exams',
+    'exam'        => 'exams',
+    'add_exam'     => 'add exam',
+    'edit_exam'    =>"edit exam",
+
+    'levels'         => 'levels',
+    'add_level'     => 'add level',
+    'edit_level'    =>"edit level",
 ];
 
 

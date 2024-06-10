@@ -5,6 +5,8 @@
 use App\Http\Controllers\Dashboard\AdminController;
 use App\Http\Controllers\Dashboard\AuthController;
 use App\Http\Controllers\Dashboard\ContactsController;
+use App\Http\Controllers\Dashboard\ExamController;
+use App\Http\Controllers\Dashboard\LevelController;
 use App\Http\Controllers\Dashboard\RoleController;
 use App\Http\Controllers\Dashboard\SupervisorController;
 use App\Http\Controllers\Dashboard\UserController;
@@ -80,6 +82,12 @@ Route::middleware(['localization', "auth:admin"])->group(function () {
     Route::resource("users", UserController::class);
     Route::post('/users/deleteSelected', [UserController::class,'deleteSelected'])->name('users.deleteSelected');
     Route::post('/users/active/{id}', [UserController::class,'active'])->name('users.active');
+
+    Route::resource("levels", LevelController::class);
+    Route::post('/levels/deleteSelected', [LevelController::class,'deleteSelected'])->name('levels.deleteSelected');
+
+    Route::resource("exams", ExamController::class);
+    Route::post('/exams/deleteSelected', [ExamController::class,'deleteSelected'])->name('exams.deleteSelected');
 
 
 });

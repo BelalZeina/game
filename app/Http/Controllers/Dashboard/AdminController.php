@@ -24,8 +24,7 @@ class AdminController extends Controller
 
     public function index(Request $request)
     {
-        $perPage = $request->get('per_page', 10); // Default to 10 if not specified
-        $data = Admin::whereHasRole("owner")->paginate($perPage);
+        $data = Admin::whereHasRole("owner")->get();
         return view("dashboard.admins.index", compact("data"));
     }
 

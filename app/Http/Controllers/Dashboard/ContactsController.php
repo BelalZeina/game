@@ -22,7 +22,7 @@ class ContactsController extends Controller
      */
     public function index()
     {
-        $data = Contact::all();
+        $data = Contact::latest()->get();
         return view("dashboard.contacts.index", compact('data'));
     }
 

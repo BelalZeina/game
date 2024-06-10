@@ -80,6 +80,33 @@
                 </a>
             </li>
         @endif
+        @if($user->hasPermission('exams-read'))
+
+        <li class="menu-item {{ isActiveRoute(['exams.index','exams.edit','exams.create' ,'exams.show','levels.index','levels.edit','levels.create' ,'levels.show']) }}">
+            <a href="javascript:void(0);" class="menu-link menu-toggle d-flex align-items-center gap-2">
+                <i class="fa-solid fa-file-circle-question"></i>
+                <div data-i18n="Account Settings">{{ __('models.exams') }} </div>
+            </a>
+            <ul class="menu-sub">
+
+                @if($user->hasPermission('exams-read'))
+                <li class="menu-item {{ isActiveRoute(['exams.index','exams.edit','exams.create' ,'exams.show']) }}">
+                    <a href="{{ route('exams.index') }}" class="menu-link">
+                        <div data-i18n="Connections">{{ __('models.exams') }}</div>
+                    </a>
+                </li>
+                @endif
+
+                @if($user->hasPermission('exams-read'))
+                <li class="menu-item {{ isActiveRoute(['levels.index','levels.edit','levels.create' ,'levels.show']) }}">
+                    <a href="{{ route('levels.index') }}" class="menu-link">
+                        <div data-i18n="Connections">{{ __('models.levels') }}</div>
+                    </a>
+                </li>
+                @endif
+            </ul>
+        </li>
+        @endif
 
         @if($user->hasPermission('contact_us-read'))
             <li class="menu-item {{ isActiveRoute(['contacts.index']) }}">

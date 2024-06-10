@@ -33,5 +33,9 @@ class Admin extends Authenticatable implements LaratrustUser
     ];
     // Define a local scope to get users with the 'admin' role
 
+    public function exams()
+    {
+        return $this->hasMany(Exam::class);
+    }
 }
 

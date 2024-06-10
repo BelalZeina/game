@@ -1,6 +1,6 @@
 @extends('layouts.dashboard.app')
 @section('header__title', __('models.videos'))
-@section('header__icon', 'fa-solid fa-users')
+@section('header__icon', 'fa-solid fa-video')
 @section('main')
     <div class="content-wrapper">
         <!-- Content -->

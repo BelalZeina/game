@@ -43,4 +43,11 @@ class User extends Authenticatable
     protected $casts = [
         'expire_at' => 'datetime',
     ];
+
+    public function exams()
+    {
+        return $this->belongsToMany(Exam::class, 'user_exams')
+                    ->withPivot('score')
+                    ->withTimestamps();
+    }
 }
