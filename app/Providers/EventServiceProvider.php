@@ -2,10 +2,12 @@
 
 namespace App\Providers;
 
+use App\Models\Level;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\View;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -25,7 +27,12 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        View::composer('*', function ($view) {
+            // $data['auth_user'] = auth()->user();
+            $data['lang'] = app()->getLocale();
+            $data['levels'] = Level::all();
+            $view->with($data);
+        });
     }
 
     /**

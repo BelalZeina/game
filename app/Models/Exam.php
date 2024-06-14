@@ -9,7 +9,7 @@ class Exam extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['level_id', 'admin_id', 'time'];
+    protected $fillable = ['level_id', 'admin_id', 'time','start_time',"end_time"];
 
     public function level()
     {

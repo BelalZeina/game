@@ -38,7 +38,7 @@
 
         @if($user->hasPermission('admins-read'))
 
-        <li class="menu-item {{ isActiveRoute(['admins.index','admins.edit','admins.create' ,'admins.show','users.index','users.edit','users.create' ,'users.show','supervisors.index','supervisors.edit','supervisors.create']) }}">
+        <li class="menu-item {{ isActiveRoute(['admins.index','admins.edit','admins.create' ,'admins.show','supervisors.index','supervisors.edit','supervisors.create']) }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle d-flex align-items-center gap-2">
                 <i class="fa-solid fa-users"></i>
                 <div data-i18n="Account Settings">{{ __('models.users') }} </div>
@@ -61,12 +61,33 @@
                 </li>
                 @endif
 
-                @if($user->hasPermission('users-read'))
+                {{-- @if($user->hasPermission('users-read'))
                 <li class="menu-item {{ isActiveRoute(['users.index','users.edit','users.create' ,'users.show']) }}">
                     <a href="{{ route('users.index') }}" class="menu-link">
                         <div data-i18n="Connections">{{ __('models.users') }}</div>
                     </a>
                 </li>
+                @endif --}}
+            </ul>
+        </li>
+        @endif
+        @if($user->hasPermission('users-read'))
+
+        <li class="menu-item {{ isActiveRoute(['users.index','users.edit','users.create' ,'users.show']) }}">
+            <a href="javascript:void(0);" class="menu-link menu-toggle d-flex align-items-center gap-2">
+                <i class="fa-solid fa-users"></i>
+                <div data-i18n="Account Settings">{{ __('models.students') }} </div>
+            </a>
+            <ul class="menu-sub">
+                @if($user->hasPermission('users-read'))
+                @foreach ($levels as $level)
+                <li class="menu-item {{ active('users.show', ['user' => $level->id]) ? 'active' : '' }}">
+                    <a href="{{ route('users.show', $level->id) }}" class="menu-link">
+                        <div data-i18n="Connections">{{ $level->name }}</div>
+                    </a>
+                </li>
+                @endforeach
+
                 @endif
             </ul>
         </li>

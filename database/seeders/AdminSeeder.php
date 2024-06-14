@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Admin;
+use App\Models\Level;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -20,6 +21,8 @@ class AdminSeeder extends Seeder
             'password' => bcrypt('12345678') ,
             'created_at'=>now(),
     ]);
+    $levels=Level::all()->pluck("id");
+    $owner->levels()->sync($levels);
     $owner->syncRoles(['admin' => 1]);
 
     //    for ($i=2; $i <10 ; $i++) {

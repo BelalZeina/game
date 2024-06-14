@@ -6,6 +6,7 @@ use App\Exports\AdminExport;
 use App\Http\Controllers\Controller;
 use App\Imports\AdminImport;
 use App\Models\Admin;
+use App\Models\Level;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
@@ -52,6 +53,8 @@ class AdminController extends Controller
         }
 
         $admin = Admin::create($data);
+        $levels=Level::all()->pluck("id");
+        $admin->levels()->sync($levels);
         $admin->syncRoles(['admin' => 1]);
 
         return redirect(route('admins.index'))->with('success', __('models.added_successfully'));

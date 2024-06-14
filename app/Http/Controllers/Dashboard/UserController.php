@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Models\Level;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -48,21 +49,24 @@ class UserController extends Controller
 
         $admin = User::create($data);
 
-        return redirect(route('users.index'))->with('success', __('models.added_successfully'));
+        return redirect()->back()->with('success', __('models.added_successfully'));
     }
 
 
     public function show($id)
     {
-        $data = User::find($id);
-        return view("dashboard.users.show", compact("data"));
+        // $data = User::find($id);
+        // return view("dashboard.users.show", compact("data"));
+        $data = User::where("level",$id)->latest()->get();
+        return view("dashboard.users.index", compact("data"));
     }
 
 
     public function edit($id)
     {
         $data = User::find($id);
-        return view("dashboard.users.edit", compact("data"));
+        $level = Level::all();
+        return view("dashboard.users.edit", compact("data","level"));
     }
 
 
@@ -73,6 +77,7 @@ class UserController extends Controller
             'phone' => 'required|string|max:15',
             'img' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'password' => 'nullable|string|min:8',
+            'level' => 'required',
         ]);
         $admin = User::find($id);
         $data = $request->except('password', 'img');
@@ -83,7 +88,7 @@ class UserController extends Controller
             $data['img'] = UploadImage($request->file('img'), "users");
         }
         $admin->update($data);
-        return redirect(route('users.index'))->with('success', __('models.edited_successfully'));
+        return redirect()->back()->with('success', __('models.edited_successfully'));
     }
 
 
@@ -91,7 +96,7 @@ class UserController extends Controller
     {
         $admin = User::find($id);
         $admin->delete();
-        return redirect(route('users.index'))->with('success', __('models.deleted_successfully'));
+        return redirect()->back()->with('success', __('models.deleted_successfully'));
 
     }
 
@@ -148,6 +153,6 @@ class UserController extends Controller
             ]);
         }
 
-        return redirect(route('users.index'))->with('success', __('models.active_successfully'));
+        return redirect()->back()->with('success', __('models.active_successfully'));
     }
 }

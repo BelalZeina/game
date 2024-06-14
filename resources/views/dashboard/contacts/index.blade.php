@@ -106,7 +106,9 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdn.datatables.net/2.0.7/js/dataTables.js"></script>
     <script>
-        let table = new DataTable('#myTable');
+        let table = new DataTable('#myTable', {
+                "order": [] // Disable initial ordering
+            });
     </script>
     <script>
         $(document).ready(function() {

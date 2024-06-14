@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('active')->default(0);
             $table->date('expire_at')->nullable();
+            $table->integer('level')->default(1);
             $table->rememberToken();
             $table->timestamps();
         });

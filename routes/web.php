@@ -58,6 +58,11 @@ Route::get('/', function () { if (auth("admin")->check()) {return view('dashboar
 Route::middleware(['localization', "auth:admin"])->group(function () {
     Route::get('/dashboard', function () { return view('dashboard.index');})->name("dashboard.index");
 
+
+    Route::get('setting', [AuthController::class, 'setting'])->name("setting");
+    Route::post('setting', [AuthController::class, 'update_setting'])->name("update_setting");
+
+
     Route::resource("contacts", ContactsController::class);
     Route::post('/contacts/deleteSelected', [ContactsController::class,'deleteSelected'])->name('contacts.deleteSelected');
 

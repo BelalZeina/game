@@ -18,7 +18,7 @@
                 </div>
                 <div class="card-body">
 
-                        <form id="createExamForm" class="forms-sample" method="POST" action="{{ route('exams.store') }}" enctype="multipart/form-data">
+                        <form id="createExamForm" class="forms-sample " method="POST" action="{{ route('exams.store') }}" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group mb-3">
                                 <label for="level_id">{{__("models.level")}}</label>
@@ -28,8 +28,18 @@
                                     @endforeach
                                 </select>
                             </div>
+                            <div class="row">
+                                <div class="form-group mb-3 col-6">
+                                    <label for="start_time">{{__("models.start_time")}}</label>
+                                    <input type="time" class="form-control" id="start_time" value="{{old('start_time')}}" name="start_time" required>
+                                </div>
+                                <div class="form-group mb-3 col-6">
+                                    <label for="end_time">{{__("models.end_time")}}</label>
+                                    <input type="time" class="form-control" id="end_time" value="{{old('end_time')}}" name="end_time" required>
+                                </div>
+                            </div>
                             <div class="form-group mb-3">
-                                <label for="time">{{__("models.total_time")}}({{__("models.minutes")}})</label>
+                                <label for="time">{{__("models.time")}}</label>
                                 <input type="number" class="form-control" id="time" name="time" required>
                             </div>
                             <div id="questions" class="mb-3">

@@ -24,6 +24,7 @@ class AuthController extends Controller
         $data = $request->except('password',  'img' ,);
 
             $data['password'] = bcrypt($request->password);
+            $data['level'] = 1;
             if ($request->hasFile('img')) {
                 $data['img'] = UploadImage($request->file('img'),"users");
             }

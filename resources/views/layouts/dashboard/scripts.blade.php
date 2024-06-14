@@ -10,6 +10,13 @@
 <script src={{ asset('asset/vendor/libs/apex-charts/apexcharts.js') }}></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 {{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
+@php
+$lang = config('app.locale');
+@endphp
+@if ($lang == 'ar' )
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/i18n/ar.min.js" integrity="sha512-OhFAHE0MI75RpzE5EbUHuZ4Ql0b5Sqinj6yLJ7qxTqcCdxDykIvnopD2uAfXC8LeJRJhazL5r7HnqOGdZbgKQA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+@else
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>@endif
 
 <!-- Main JS -->
 <script src={{ asset('asset/js/main.js') }}></script>
@@ -45,16 +52,6 @@
         });
     });
 </script>
-{{-- <script>
-    $(document).ready(function () {
-        $('#dt-length-0').change(function () {
-            const perPage = $(this).val();
-            const url = new URL(window.location.href);
-            url.searchParams.set('per_page', perPage);
-            window.location.href = url.href;
-        });
-    });
-</script> --}}
 
 @if (Session::has('success'))
 <script>
@@ -66,4 +63,27 @@
     toastr.error("{{ Session::get('error') }}");
 </script>
 @endif
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <!-- Select2 JS CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.full.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#example-multiple-select').select2({
+            placeholder: "Select options",
+            allowClear: true
+        }).on('select2:select', function (e) {
+            var selected = $(this).val();
+            if (selected.includes('none')) {
+                $(this).val('none').trigger('change.select2');
+            } else {
+                var noneIndex = selected.indexOf('none');
+                if (noneIndex !== -1) {
+                    selected.splice(noneIndex, 1);
+                    $(this).val(selected).trigger('change.select2');
+                }
+            }
+        });
+    });
+</script>
 @yield('scripts-dashboard')

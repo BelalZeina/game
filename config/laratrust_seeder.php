@@ -26,7 +26,9 @@ return [
 
         ],
 
-        'supervisor' => [] ,
+        'supervisor' => [
+            'exams'                       => 'c,r,u,d',
+        ] ,
 
 
     ],

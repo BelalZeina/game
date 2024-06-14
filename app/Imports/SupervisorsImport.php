@@ -3,6 +3,7 @@
 namespace App\Imports;
 
 use App\Models\Admin;
+use App\Models\Level;
 use App\Models\Role;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Hash;
@@ -25,6 +26,8 @@ class SupervisorsImport implements ToModel, WithHeadingRow, WithValidation
             ['phone' => $row['phone']],
             $data
         );
+        $levels=Level::first()->id;
+        $admin->levels()->sync([$levels]);
         $role=Role::where("name", $row['role'])->first();
         $admin->syncRoles([$role->id]);
         return $admin;
@@ -34,7 +37,7 @@ class SupervisorsImport implements ToModel, WithHeadingRow, WithValidation
         return [
             'name'=>"required",
             'phone'=>"required|unique:admins,phone",
-            'role' => 'required|exists:roles,name', 
+            'role' => 'required|exists:roles,name',
         ];
     }
     public function messages(): array

@@ -114,7 +114,7 @@ id="layout-navbar">
                     <div class="dropdown-divider"></div>
                 </li>
                 <li>
-                    <a class="dropdown-item" href="{{route("admins.edit",auth("admin")?->user()->id)}}">
+                    <a class="dropdown-item" href="{{route("setting")}}">
                         <i class="bx bx-cog me-2"></i>
                         <span class="align-middle">Settings</span>
                     </a>

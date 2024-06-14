@@ -47,6 +47,18 @@
                             @enderror
                         </div>
                         <div class="form-group mb-3">
+                            <label>{{ __('models.level') }}</label>
+                            <select name="level" class="form-control" required>
+                                <option value="">{{ __('models.select') }}</option>
+                                @foreach ($levels as $key=>$level)
+                                    <option value="{{ $key+1 }}" {{ $data->level== $key+1? 'selected' : '' }}>{{ $level->name }}</option>
+                                @endforeach
+                            </select>
+                            @error('role')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div class="form-group mb-3">
                             <label>{{ __('models.img') }}</label>
                             <input type="file" name="img" class="form-control @error('img') is-invalid @enderror" id="imageInput" accept="image/*">
                             @error('img')

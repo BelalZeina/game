@@ -81,9 +81,9 @@ class LevelController extends Controller
     {
         $ids = $request->ids;
         foreach ($ids as $id) {
-            $admin = Level::find($id);
-            if ($admin) {
-                $admin->delete();
+            $level = Level::find($id);
+            if ($level) {
+                $level->delete();
             }
         }
         return response()->json(['success' => true]);

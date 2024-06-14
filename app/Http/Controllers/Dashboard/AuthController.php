@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\AuthRequest;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\Admin;
 use App\Repositories\Sql\AdminRepository;
 use Illuminate\Http\Request;
 
@@ -42,7 +43,32 @@ class AuthController extends Controller
         return redirect()->route('login');
     }
 
+    public function setting()
+    {
+        $data = Admin::find(auth("admin")->id());
+        return view("dashboard.admins.setting", compact("data"));
+    }
 
+
+    public function update_setting(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'phone' => 'required|string|max:15',
+            'img' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'password' => 'nullable|string|min:8',
+        ]);
+        $admin =Admin::find(auth("admin")->id());
+        $data = $request->except('password', 'img');
+
+        $data['password'] = $request->password ? bcrypt($request->password) : $admin->password;
+
+        if ($request->hasFile('img')) {
+            $data['img'] = UploadImage($request->file('img'), "users");
+        }
+        $admin->update($data);
+        return redirect()->back()->with('success', __('models.edited_successfully'));
+    }
 
 
 

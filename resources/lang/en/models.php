@@ -173,6 +173,7 @@ return [
     'add_supervisor'     => 'add supervisor',
     'edit_supervisor'    =>"edit supervisor",
 
+    'students'         => 'students',
     'user'         => 'user',
     'level'         => 'level',
     'exams'         => 'exams',

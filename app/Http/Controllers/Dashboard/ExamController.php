@@ -28,7 +28,7 @@ class ExamController extends Controller
 
     public function create()
     {
-        $levels=Level::all();
+        $levels=auth("admin")->user()->levels;
         return view("dashboard.exams.create",compact("levels"));
 
     }
@@ -41,6 +41,8 @@ class ExamController extends Controller
         $rules = [
             'level_id' => 'required|exists:levels,id',
             'time' => 'required|numeric|min:1',
+            'start_time' => 'required|date_format:H:i', // Validating input to ensure proper time format
+            'end_time' => 'required|date_format:H:i',
             'questions' => 'required|array',
             'questions.*.data' => 'required|string',
             'questions.*.operation' => 'required|in:+,-,*,/',
@@ -57,6 +59,8 @@ class ExamController extends Controller
             'level_id' => $request->level_id,
             'admin_id' => auth("admin")->user()->id,
             'time' => $request->time,
+            'start_time' => $request->start_time. ':00',
+            'end_time' => $request->end_time. ':00',
         ]);
 
         foreach ($request->questions as $question) {
@@ -84,7 +88,7 @@ class ExamController extends Controller
      */
     public function edit(string $id)
     {
-        $levels=Level::all();
+        $levels=auth("admin")->user()->levels;
         $data=Exam::find($id);
         return view("dashboard.exams.edit",compact("levels","data"));
     }
@@ -97,6 +101,8 @@ class ExamController extends Controller
         $rules = [
             'level_id' => 'required|exists:levels,id',
             'time' => 'required|numeric|min:1',
+            'start_time' => 'required', // Validating input to ensure proper time format
+            'end_time' => 'required|',
             'questions' => 'required|array',
             'questions.*.data' => 'required|string',
             'questions.*.operation' => 'required|in:+,-,*,/',
@@ -112,6 +118,8 @@ class ExamController extends Controller
         $exam->update([
             'level_id' => $request['level_id'],
             'time' => $request['time'],
+            'start_time' => $request->start_time,
+            'end_time' => $request->end_time,
         ]);
 
         $exam->questions()->delete();

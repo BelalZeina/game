@@ -46,6 +46,7 @@
                                 </th>
                                 <th>{{ __('models.phone') }}</th>
                                 <th>{{ __('models.img') }}</th>
+                                <th>{{ __('models.level') }}</th>
                                 <th>{{ __('models.active') }}</th>
                                 <th>{{ __('models.expire_at') }}</th>
                                 <th>{{ __('models.action') }}</th>
@@ -72,6 +73,7 @@
                                         max-width: 50px;
                                         height: 50px;">
                                     </td>
+                                    <td> {{ $user->level }}</td>
                                     <td>
                                         @if (optional(Carbon::parse($user->expire_at))->isPast())
                                             <div class="btn btn-icon btn-dark"><i class="fa-solid fa-power-off"

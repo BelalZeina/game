@@ -103,6 +103,14 @@ if(!function_exists("isActiveRoute")){
 
         return null;
     }
+
+    if (!function_exists('active')) {
+        function active($routeName, $parameters = [])
+        {
+            return request()->routeIs($routeName) && request()->route()->parameters() == $parameters;
+        }
+    }
+
 }
 
 

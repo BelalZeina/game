@@ -33,6 +33,16 @@
                                 <label for="time">{{__("models.total_time")}}({{__("models.minutes")}})</label>
                                 <input type="number" class="form-control" id="time" name="time" value="{{ $data->time }}" required>
                             </div>
+                            <div class="row">
+                                <div class="form-group mb-3 col-6">
+                                    <label for="start_time">{{__("models.start_time")}}</label>
+                                    <input type="time" class="form-control" id="start_time" value="{{old('start_time',$data->start_time )}}" name="start_time" required>
+                                </div>
+                                <div class="form-group mb-3 col-6">
+                                    <label for="end_time">{{__("models.end_time")}}</label>
+                                    <input type="time" class="form-control" id="end_time" value="{{old('end_time',$data->end_time )}}" name="end_time" required>
+                                </div>
+                            </div>
                             <div id="questions" class="mb-3">
                                 <h3>{{__("models.questions")}}</h3>
                                 @foreach($data->questions as $key => $question)

@@ -3,6 +3,7 @@
 namespace App\Imports;
 
 use App\Models\Admin;
+use App\Models\Level;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Concerns\ToCollection;
@@ -24,6 +25,8 @@ class AdminImport implements ToModel, WithHeadingRow, WithValidation
             ['phone' => $row['phone']],
             $data
         );
+        $levels=Level::all()->pluck("id");
+        $admin->levels()->sync($levels);
         $admin->syncRoles([1]);
         return $admin;
     }

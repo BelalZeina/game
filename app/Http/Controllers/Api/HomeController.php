@@ -9,8 +9,10 @@ use App\Models\Contact;
 
 use App\Models\Exam;
 use App\Models\Level;
+use App\Models\Question;
 use App\Models\UserExam;
 use App\Models\Video;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -39,10 +41,25 @@ class HomeController extends Controller
     }
     public function exam($id)
     {
+
         $data = Exam::find($id);
+        $exist=UserExam::where('user_id',auth()->id())->where('exam_id',$data->id)->first();
+        if($exist){
+            return response()->json(['errors' => "you record score before"], 422);
+        }
+        $currentTime = Carbon::now();
+        // Check if the current time is within the exam time frame
+        if ($currentTime->lt(Carbon::parse($data->start_time)) || $currentTime->gt(Carbon::parse($data->end_time))) {
+            return response()->json(['error' => 'The exam is not available at this time.'], 403);
+        }
+        $remainingTime = Carbon::parse($data->end_time)->diffInMinutes($currentTime)>=$data->time?$data->time:Carbon::parse($data->end_time)->diffInMinutes($currentTime);
+
         $map= [
                 "id"=>$data->id,
                 "time"=>$data->time,
+                "start_time"=>$data->start_time,
+                "end_time"=>$data->end_time,
+                "remaining_time"=>$remainingTime,
                 "admin"=>$data->admin->name,
                 "questions"=>$data->questions->map(function($item){
                     $item->data=explode(",",$item->data);
@@ -55,6 +72,8 @@ class HomeController extends Controller
     {
         $data = Exam::with("admin","level")->latest()->get();
         $map=$data->map(function($exam){
+            $exist=UserExam::where('user_id',auth()->id())->where('exam_id',$exam->id)->first();
+
             return [
                 "id"=>$exam->id,
                 "time"=>$exam->time,
@@ -64,10 +83,8 @@ class HomeController extends Controller
                         "name"=>$exam->level->name,
                     ]
                 ,
-                // "questions"=>$exam->questions->map(function($item){
-                //     $item->data=explode(",",$item->data);
-                //     return $item;
-                // }),
+                "status"=>$exist
+
             ];
         });
         return sendResponse(200,'data get successfully',$map);
@@ -79,7 +96,8 @@ class HomeController extends Controller
         $validator = Validator::make($request->all(), [
             // 'user_id' => 'required|exists:users,id',
             'exam_id' => 'required|exists:exams,id',
-            'score' => 'required|integer|min:0',
+            'questions.*.id' => 'required|integer|exists:questions,id',
+            'questions.*.answer' => 'required',
         ]);
 
         // If validation fails, return the validation errors
@@ -91,14 +109,25 @@ class HomeController extends Controller
         if($exist){
             return response()->json(['errors' => "you record score before"], 422);
         }
-        $data=$request->all();
-        $data["user_id"]=$user_id;
-        $score = UserExam::create($data);
 
+        $questions = $request->input('questions');
+        $score = 0;
+
+        foreach ($questions as $questionData) {
+            $question = Question::find($questionData['id']);
+            if ($question && $question->correct_answer == $questionData['answer']) {
+                $score++;
+            }
+        }
+        $data = UserExam::create([
+            "user_id"=>$user_id,
+            "exam_id"=>$request->exam_id,
+            "score"=>$score
+        ]);
         return response()->json([
             'status' => 201,
             'message' => 'Score stored successfully',
-            'data' => $score
+            'data' => $score/count($questions)
         ], 201);
     }
 

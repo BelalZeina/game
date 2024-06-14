@@ -23,6 +23,7 @@ class User extends Authenticatable
         'password',
         'active',
         'expire_at',
+        'level',
     ];
 
     /**

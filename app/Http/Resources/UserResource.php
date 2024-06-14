@@ -19,6 +19,7 @@ class UserResource extends JsonResource
             'id'    => $this->id ,
             'name'  => $this->name ,
             'phone' => $this->phone ,
+            'level' => $this->level ,
             'img'   =>$this->img? url('storage/' . $this->img):null ,
         ];;
     }

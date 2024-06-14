@@ -14,11 +14,23 @@ class LevelSeeder extends Seeder
     public function run(): void
     {
                 // Sample data for levels
-                $levels = [
-                    ['name_en' => 'Beginner', 'name_ar' => 'مبتدئ'],
-                    ['name_en' => 'Intermediate', 'name_ar' => 'متوسط'],
-                    ['name_en' => 'Advanced', 'name_ar' => 'متقدم'],
+                $levelNamesEn = [
+                    'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine'
                 ];
+
+                $levelNamesAr = [
+                    'الأول', 'الثاني', 'الثالث', 'الرابع', 'الخامس', 'السادس', 'السابع', 'الثامن', 'التاسع'
+                ];
+
+
+                $levels = [];
+
+                for ($i = 0; $i < count($levelNamesEn); $i++) {
+                    $levels[] = [
+                        'name_en' => 'Level ' . $levelNamesEn[$i],
+                        'name_ar' => 'المستوى ' . $levelNamesAr[$i]
+                    ];
+                }
 
                 // Insert data into the levels table
                 foreach ($levels as $level) {

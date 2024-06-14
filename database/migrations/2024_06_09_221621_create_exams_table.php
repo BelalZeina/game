@@ -16,6 +16,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId("level_id")->constrained()->cascadeOnDelete();
             $table->foreignId("admin_id")->constrained()->cascadeOnDelete();
+            $table->time('start_time');
+            $table->time('end_time');
             $table->integer("time");
             $table->timestamps();
         });

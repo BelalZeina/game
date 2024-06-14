@@ -17,4 +17,10 @@ class Level extends Model
     {
         return $this->attributes['name_' . app()->getLocale()];
     } // end getNameAttribute
+
+    public function admins()
+    {
+        return  $this->belongsToMany(Admin::class, 'admin_levels')
+        ->withTimestamps();
+    }
 }

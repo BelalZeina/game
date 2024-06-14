@@ -37,5 +37,11 @@ class Admin extends Authenticatable implements LaratrustUser
     {
         return $this->hasMany(Exam::class);
     }
+    public function levels()
+    {
+        return  $this->belongsToMany(Level::class, 'admin_levels')
+        ->withTimestamps();
+    }
+
 }
 

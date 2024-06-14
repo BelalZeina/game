@@ -6,6 +6,7 @@ use App\Exports\SupervisorsExport;
 use App\Http\Controllers\Controller;
 use App\Imports\SupervisorsImport;
 use App\Models\Admin;
+use App\Models\Level;
 use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -35,8 +36,10 @@ class SupervisorController extends Controller
 
     public function create()
     {
+        $levels=Level::all();
+
         $roles=Role::all();
-        return view("dashboard.supervisor.create",compact("roles"));
+        return view("dashboard.supervisor.create",compact("roles","levels"));
     }
 
     public function store(Request $request)
@@ -47,7 +50,7 @@ class SupervisorController extends Controller
             'img' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'password' => 'required|string|min:8',
         ]);
-        $data = $request->except('password' , 'img' );
+        $data = $request->except('password' , 'img',"levels");
 
         $data['password'] = bcrypt($request->password) ;
 
@@ -56,6 +59,8 @@ class SupervisorController extends Controller
         }
 
         $admin =Admin::create($data);
+        $levels=$request->levels;
+        $admin->levels()->sync($levels);
         $admin->syncRoles([$request->role]);
 
         return redirect(route('supervisors.index'))->with('success', __('models.added_successfully'));
@@ -65,15 +70,16 @@ class SupervisorController extends Controller
     public function show($id)
     {
         $data=Admin::find($id);
-        return view("dashboard.supervisor.show",compact("data"));
+        return view("dashboard.supervisor.show",compact("data","levels"));
     }
 
 
     public function edit($id)
     {
+        $levels=Level::all();
         $data=Admin::find($id);
         $roles=Role::all();
-        return view("dashboard.supervisor.edit",compact("data",'roles'));
+        return view("dashboard.supervisor.edit",compact("data",'roles',"levels"));
     }
 
 
@@ -94,6 +100,8 @@ class SupervisorController extends Controller
             $data['img'] = UploadImage($request->file('img'),"users");
         }
         $admin->update($data);
+        $levels=$request->levels;
+        $admin->levels()->sync($levels);
         $admin->syncRoles([$request->role]);
         return redirect(route('supervisors.index'))->with('success', __('models.edited_successfully'));
     }

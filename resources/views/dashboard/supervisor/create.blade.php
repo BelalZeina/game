@@ -4,7 +4,6 @@
     <div class="content-wrapper">
         <!-- Content -->
 
-
         <div class="container-xxl flex-grow-1 container-p-y">
 
             <div class="card">
@@ -53,7 +52,19 @@
                                 <span class="invalid-feedback">{{ $message }}</span>
                             @enderror
                         </div>
-
+                        <div class="form-group mb-3">
+                            <label for="example-multiple-select">Select Options</label>
+                            <select id="example-multiple-select" name="levels[]" multiple="multiple" class="form-control">
+                                @foreach ($levels as $level)
+                                    <option
+                                    {{ isset($data) &&$data->levels()->where('level_id', $level->id)->first()? 'selected': '' }}
+                                    value="{{$level->id}}" >{{$level->name}}</option>
+                                @endforeach
+                            </select>
+                            @error('levels')
+                            <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
                         <div class="form-group mb-3">
                             <label>{{ __("models.img") }}</label>
                             <input type="file" name="img" class="form-control @error('img') is-invalid @enderror" id="imageInput" accept="image/*">
@@ -71,6 +82,10 @@
             </div>
         </div>
     </div>
+@endsection
+@section('scripts-dashboard')
+
+
 @endsection
 
 
