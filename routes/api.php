@@ -38,6 +38,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/exams', [HomeController::class, 'exams']);
 
     Route::post('/store/score', [HomeController::class, 'store_score']);
+    Route::post('/score', [HomeController::class, 'score']);
+
+    Route::get('/report_exams', [HomeController::class, 'report_exams']);
+    Route::get('/report_score', [HomeController::class, 'report_score']);
 
 
 });

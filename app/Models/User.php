@@ -51,4 +51,9 @@ class User extends Authenticatable
                     ->withPivot('score')
                     ->withTimestamps();
     }
+
+    public function scores()
+    {
+        return $this->hasMany(Exam::class);
+    }
 }

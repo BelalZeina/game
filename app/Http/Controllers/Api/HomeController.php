@@ -10,17 +10,21 @@ use App\Models\Contact;
 use App\Models\Exam;
 use App\Models\Level;
 use App\Models\Question;
+use App\Models\Score;
+use App\Models\User;
 use App\Models\UserExam;
 use App\Models\Video;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class HomeController extends Controller
 {
     public function levels(Request $request)
     {
-        $data = Level::get();
+        $level_user=auth()->user()->level;
+        $data = Level::get()->take($level_user);
         $map=$data->map(function($item){
             return [
                 "id"=>$item->id,
@@ -32,10 +36,16 @@ class HomeController extends Controller
     public function level($id)
     {
         $data = Level::find($id);
+        $userId = auth()->id(); // Assuming you have user authentication in place
+
+        // Get exams that the user hasn't solved
+        $unsolvedExams = $data->exams()->whereDoesntHave('users', function ($query) use ($userId) {
+            $query->where('user_id', $userId);
+        })->get();
         $map= [
                 "id"=>$data->id,
                 "name"=>$data->name,
-                "exams"=>$data->exams,
+                "exams"=>$unsolvedExams,
             ];
         return sendResponse(200,'data get successfully',$map);
     }
@@ -122,7 +132,7 @@ class HomeController extends Controller
         $data = UserExam::create([
             "user_id"=>$user_id,
             "exam_id"=>$request->exam_id,
-            "score"=>$score
+            "score"=>$score/count($questions)
         ]);
         return response()->json([
             'status' => 201,
@@ -130,6 +140,50 @@ class HomeController extends Controller
             'data' => $score/count($questions)
         ], 201);
     }
+
+    public function score(Request $request)
+    {
+        $user_id=auth()->id();
+        $data=Score::create([
+            "user_id"=>$user_id,
+            "score"=>$request->score,
+        ]);
+        return sendResponse(200,'data store successfully',$data);
+    }
+
+
+    public function report_exams(Request $request)
+    {
+        $data = User::leftJoin('user_exams', 'users.id', '=', 'user_exams.user_id')
+        ->select(
+            'users.id',
+            'users.name',
+            DB::raw('COALESCE(AVG(user_exams.score), 0)*100 as average_score'),
+            DB::raw('COUNT(user_exams.id) as exams_count')
+        )
+        ->groupBy('users.id', 'users.name')
+        ->orderBy("average_score","desc")
+        ->get();
+
+        return sendResponse(200,'data store successfully',$data);
+    }
+
+    public function report_score(Request $request)
+    {
+        $data = User::leftJoin('scores', 'users.id', '=', 'scores.user_id')
+        ->select(
+            'users.id',
+            'users.name',
+            DB::raw('COALESCE(AVG(scores.score), 0)*100 as average_score'),
+            DB::raw('COUNT(scores.id) as exams_count')
+        )
+        ->groupBy('users.id', 'users.name')
+        ->orderBy("average_score","desc")
+        ->get();
+
+        return sendResponse(200,'data store successfully',$data);
+    }
+
 
 
     ///////////////////////////////////////////////////////////////////////////////////

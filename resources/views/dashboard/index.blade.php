@@ -701,6 +701,6 @@
     </div>
     {{-- </div> --}}
 @endsection
-
+{{-- https://demos.themeselection.com/sneat-bootstrap-html-admin-template/html/vertical-menu-template/app-logistics-dashboard.html --}}
 @section('scripts')
 @endsection
