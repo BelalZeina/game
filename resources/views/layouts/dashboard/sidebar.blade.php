@@ -138,7 +138,19 @@
             </li>
         @endif
 
-
+        <li class="menu-item {{ isActiveRoute(['setting']) }}">
+            <a class="menu-link d-flex align-items-center gap-2" href="{{route("setting")}}">
+                {{-- <i class="bx bx-cog me-2"></i> --}}
+                <i class="fa fa-cog"></i>
+                <span class="align-middle">{{__("models.settings")}}</span>
+            </a>
+        </li>
+        <li class="menu-item {{ isActiveRoute(['logout']) }}">
+            <a class="menu-link d-flex align-items-center gap-2" href="{{ route('logout') }}">
+                <i class="bx bx-power-off me-2"></i>
+                <span class="align-middle">{{__("models.logout")}}</span>
+            </a>
+        </li>
 
     </ul>
 </aside>
