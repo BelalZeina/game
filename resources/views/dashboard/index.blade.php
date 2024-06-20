@@ -14,7 +14,7 @@
                             <div class="avatar me-2">
                                 <span class="avatar-initial rounded bg-label-primary"><i class="fa fa-users"></i></span>
                             </div>
-                            <h4 class="ms-1 mb-0">{{\App\models\User::count()}}</h4>
+                            <h4 class="ms-1 mb-0">{{\App\Models\User::count()}}</h4>
                         </div>
                         <p class="mb-1 h4">{{__("models.students")}}</p>
                     </div>
@@ -27,7 +27,7 @@
                             <div class="avatar me-2">
                                 <span class="avatar-initial rounded bg-label-warning"><i class="fa fa-users"></i></span>
                             </div>
-                            <h4 class="ms-1 mb-0">{{\App\models\Admin::count()}}</h4>
+                            <h4 class="ms-1 mb-0">{{\App\Models\Admin::count()}}</h4>
                         </div>
                         <p class="mb-1 h4">{{__("models.admins")}}</p>
                     </div>
@@ -41,7 +41,7 @@
                                 <span class="avatar-initial rounded bg-label-danger"><i
                                         class="fa-solid fa-file-circle-question"></i></span>
                             </div>
-                            <h4 class="ms-1 mb-0">{{\App\models\Exam::count()}}</h4>
+                            <h4 class="ms-1 mb-0">{{\App\Models\Exam::count()}}</h4>
                         </div>
                         <p class="mb-1 h4">{{__("models.exams")}}</p>
                     </div>
@@ -54,7 +54,7 @@
                             <div class="avatar me-2">
                                 <span class="avatar-initial rounded bg-label-info"><i class="fa fa-video"></i></span>
                             </div>
-                            <h4 class="ms-1 mb-0">{{\App\models\Video::count()}}</h4>
+                            <h4 class="ms-1 mb-0">{{\App\Models\Video::count()}}</h4>
                         </div>
                         <p class="mb-1 h4">{{__("models.videos")}}</p>
                     </div>
