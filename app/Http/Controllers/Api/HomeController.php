@@ -37,11 +37,11 @@ class HomeController extends Controller
     {
         $data = Level::find($id);
         $userId = auth()->id(); // Assuming you have user authentication in place
-
+        $currentTime = Carbon::now();
         // Get exams that the user hasn't solved
         $unsolvedExams = $data->exams()->whereDoesntHave('users', function ($query) use ($userId) {
             $query->where('user_id', $userId);
-        })->get();
+        })->where('start_time',"<=",$currentTime)->where('end_time',">=",$currentTime)->get();
         $map= [
                 "id"=>$data->id,
                 "name"=>$data->name,
@@ -147,6 +147,7 @@ class HomeController extends Controller
         $data=Score::create([
             "user_id"=>$user_id,
             "score"=>$request->score,
+            "level"=>$request->level,
         ]);
         return sendResponse(200,'data store successfully',$data);
     }
@@ -163,6 +164,22 @@ class HomeController extends Controller
         )
         ->groupBy('users.id', 'users.name')
         ->orderBy("average_score","desc")
+        ->get();
+
+        return sendResponse(200,'data store successfully',$data);
+    }
+    public function report_exams_id(Request $request,$id)
+    {
+    $data = User::leftJoin('user_exams', 'users.id', '=', 'user_exams.user_id')
+        ->leftJoin('exams', 'user_exams.exam_id', '=', 'exams.id')
+        ->select(
+            'users.id',
+            'users.name',
+            DB::raw('COALESCE(AVG(CASE WHEN exams.level_id ='.$id.' THEN user_exams.score ELSE NULL END), 0) * 100 as average_score'),
+            DB::raw('COUNT(CASE WHEN exams.level_id ='.$id.' THEN user_exams.id ELSE NULL END) as exams_count')
+        )
+        ->groupBy('users.id', 'users.name')
+        ->orderBy('average_score', 'desc')
         ->get();
 
         return sendResponse(200,'data store successfully',$data);
@@ -184,6 +201,25 @@ class HomeController extends Controller
         return sendResponse(200,'data store successfully',$data);
     }
 
+    public function report_score_id(Request $request, $id)
+{
+    $data = User::leftJoin('scores', 'users.id', '=', 'scores.user_id')
+        ->select(
+            'users.id',
+            'users.name',
+            DB::raw("COALESCE(AVG(CASE WHEN scores.level = $id THEN scores.score ELSE NULL END), 0) * 100 as average_score"),
+            DB::raw("COUNT(CASE WHEN scores.level = $id THEN scores.id ELSE NULL END) as exams_count")
+        )
+        ->groupBy('users.id', 'users.name')
+        ->orderBy('average_score', 'desc')
+        ->get();
+
+    return response()->json([
+        'status' => 200,
+        'message' => 'Data retrieved successfully',
+        'data' => $data
+    ]);
+}
 
 
     ///////////////////////////////////////////////////////////////////////////////////

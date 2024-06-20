@@ -41,7 +41,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/score', [HomeController::class, 'score']);
 
     Route::get('/report_exams', [HomeController::class, 'report_exams']);
+    Route::get('/report_exams/{id}', [HomeController::class, 'report_exams_id']);
     Route::get('/report_score', [HomeController::class, 'report_score']);
+    Route::get('/report_score/{id}', [HomeController::class, 'report_score_id']);
 
 
 });
