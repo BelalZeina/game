@@ -6,6 +6,7 @@ use App\Http\Controllers\Dashboard\AdminController;
 use App\Http\Controllers\Dashboard\AuthController;
 use App\Http\Controllers\Dashboard\ContactsController;
 use App\Http\Controllers\Dashboard\ExamController;
+use App\Http\Controllers\Dashboard\HomeController;
 use App\Http\Controllers\Dashboard\LevelController;
 use App\Http\Controllers\Dashboard\RoleController;
 use App\Http\Controllers\Dashboard\SupervisorController;
@@ -53,10 +54,10 @@ Route::get('login', [AuthController::class, 'create'])->name("login");
 Route::post('login', [AuthController::class, 'login'])->name("admin.login");
 Route::get('logout', [AuthController::class, 'logout'])->name("logout");
 
-Route::get('/', function () { if (auth("admin")->check()) {return view('dashboard.index');} return view('auth.login');})->name("home")->middleware('localization');
+Route::get('/', function () { if (auth("admin")->check()) {return redirect()->route("dashboard.index");} return view('auth.login');})->name("home")->middleware('localization');
 
 Route::middleware(['localization', "auth:admin"])->group(function () {
-    Route::get('/dashboard', function () { return view('dashboard.index');})->name("dashboard.index");
+    Route::get('/dashboard', [HomeController::class,"index"])->name("dashboard.index");
 
 
     Route::get('setting', [AuthController::class, 'setting'])->name("setting");
