@@ -45,6 +45,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/report_score', [HomeController::class, 'report_score']);
     Route::get('/report_score/{id}', [HomeController::class, 'report_score_id']);
 
+    Route::get('/user_statistics', [HomeController::class, 'user_statistics']);
 
 });
 // ====================== routes not auth ===========================================

@@ -40,7 +40,6 @@ class AuthController extends Controller
     }
 
 
-
     public function login(LoginRequest $request)
     {
             $user = User::where('phone' , $request->phone)->first();
@@ -59,9 +58,6 @@ class AuthController extends Controller
             return sendResponse(403 ,'Phone & Password does not match with our record.');
 
     }
-
-
-
 
 
 
@@ -178,7 +174,7 @@ class AuthController extends Controller
             return sendResponse(404, __('api.token_not_found'), null);
         } // end of else user
 
-    } // end of change password
+    }
 
     public function delete_profile()
     {

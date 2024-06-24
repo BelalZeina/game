@@ -137,6 +137,8 @@ class HomeController extends Controller
         return response()->json([
             'status' => 201,
             'message' => 'Score stored successfully',
+            'score' => $score,
+            'total' => count($questions),
             'data' => $score/count($questions)
         ], 201);
     }
@@ -221,6 +223,66 @@ class HomeController extends Controller
     ]);
 }
 
+public function user_statistics(Request $request)
+{
+    $data = User::leftJoin('scores', 'users.id', '=', 'scores.user_id')
+    ->select(
+        'users.id',
+        'users.name',
+        DB::raw('COALESCE(AVG(scores.score), 0) * 100 as average_score'),
+        DB::raw('COUNT(scores.id) as exams_count')
+    )
+    ->groupBy('users.id', 'users.name')
+    ->orderBy('average_score', 'desc')
+    ->get();
+
+    // Calculate rank
+    $levelOneRank = 0;
+    $authUserId = auth()->id();
+    $authUserStatistics = null;
+
+    foreach ($data as $user) {
+        $levelOneRank++;
+        if ($user->id == $authUserId) {
+            $authUserStatistics = $user;
+            break;
+        }
+    }
+
+    $data = User::leftJoin('user_exams', 'users.id', '=', 'user_exams.user_id')
+    ->leftJoin('exams', 'user_exams.exam_id', '=', 'exams.id')
+    ->select(
+        'users.id',
+        'users.name',
+        DB::raw('COALESCE(AVG(CASE WHEN exams.level_id ='.auth()->user()->level.' THEN user_exams.score ELSE NULL END), 0) * 100 as average_score'),
+        DB::raw('COUNT(CASE WHEN exams.level_id ='.auth()->user()->level.' THEN user_exams.id ELSE NULL END) as exams_count')
+    )
+    ->groupBy('users.id', 'users.name')
+    ->orderBy('average_score', 'desc')
+    ->get();
+    $levelRank = 0;
+    $authUserExams = null;
+
+    foreach ($data as $user) {
+        $levelRank++;
+        if ($user->id == $authUserId) {
+            $authUserExams = $user;
+            break;
+        }
+    }
+    $data=[
+        'id' => $authUserStatistics->id,
+        'name' => $authUserStatistics->name,
+        'level' => auth()->user()->level,
+        'level_one_count_exam' => $authUserStatistics->exams_count,
+        'level_one_average_score' => $authUserStatistics->average_score,
+        'level_one_rank' => $levelOneRank,
+        'level_count_exam' => $authUserExams->exams_count,
+        'level_average_score' => $authUserExams->average_score,
+        'level_rank' => $levelRank,
+    ];
+    return sendResponse(200,'data store successfully',$data);
+}
 
     ///////////////////////////////////////////////////////////////////////////////////
     public function contact_us(Request $request)
